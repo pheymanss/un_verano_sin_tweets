@@ -9,14 +9,15 @@ un_verano <- data.table::data.table(cancion = seq_along(urls_canciones),
                                     )[, .(verso = obtener_letra(urls)), by = cancion
                                     ][, n_verso = 1:.N]
 
+# dado que se llega rápidamente al límite del API, en vez de correr una sola
+# llamada vamos a tener que ir recorriendo las letras con un contador persistente
+readr::write_lines(x = 1, file = 'proximo_verso.txt')
 
-
-
-un_verano <- data.table::fread('un_verano.csv')
-while(as.integer(readr::read_lines('proximo_verso.txt')) <= 1238){
+# que correrá siempre que no haya terminado de correr
+while(as.integer(readr::read_lines('proximo_verso.txt')) <= nrow(un_verano)){
   agregar_tweets(un_verano)
 }
 
-
+# tasa de cobertura
 tweets <- data.table::fread('tweets.csv')
-sum(is.na(tweets$tweet))/nrow(tweets)
+sum(nrow(tweets[tweet=='']))/nrow(tweets)

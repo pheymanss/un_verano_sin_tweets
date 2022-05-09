@@ -14,7 +14,7 @@ buscar_verso <- function(verso,
 
   #recoger tweets que contengan el verso
   tweets <- searchTwitter(searchString = verso,
-                          n = 10,
+                          n = 5,
                           since = fecha)
 
   if (length(tweets) == 0) {
